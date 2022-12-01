@@ -1,8 +1,8 @@
 package main
 
 import (
-	"strconv"
-	"strings"
+  "strconv"
+  "strings"
   "io/ioutil"
   "log"
   "fmt"
@@ -30,6 +30,6 @@ func main() {
   sort.Ints(elves)
   silver := elves[len(elves)-1]
   gold := elves[len(elves)-1] + elves[len(elves)-2] + elves[len(elves)-3]
-  fmt.Println("Day 1", silver)
-  fmt.Println("Day 1", gold)
+  fmt.Println("silver", silver)
+  fmt.Println("gold", gold)
 }
