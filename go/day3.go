@@ -8,21 +8,21 @@ import (
 )
 
 func main() {
-	dataStr, err := ioutil.ReadFile("day3.txt")
-	if err != nil {
-		log.Fatalf("unable to read file: %v", err)
-	}
-	silver := 0
-	gold := 0
+  dataStr, err := ioutil.ReadFile("day3.txt")
+  if err != nil {
+    log.Fatalf("unable to read file: %v", err)
+  }
+  silver := 0
+  gold := 0
   priorities := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   rucksacks :=  [][]string{}
-	data := strings.Split(string(dataStr), "\n")
+  data := strings.Split(string(dataStr), "\n")
 
-	for _, rucksackStr := range data {
+  for _, rucksackStr := range data {
     rucksackStrLength := len(rucksackStr) / 2
-		rucksack := []string{rucksackStr[0:rucksackStrLength], rucksackStr[rucksackStrLength:]}
+    rucksack := []string{rucksackStr[0:rucksackStrLength], rucksackStr[rucksackStrLength:]}
     rucksacks = append(rucksacks, rucksack);
-	}
+  }
   for _, rucksack := range rucksacks {
     for _, letter := range rucksack[0] {
       if(strings.Index(rucksack[1], string(letter)) != -1) {
@@ -30,7 +30,7 @@ func main() {
         break;
       }
     }
-	}
+  }
 
   rucksacksGold :=  [][]string{}
   for i := 0; i < len(data); i+=3 {
@@ -45,6 +45,6 @@ func main() {
     }
   }
   
-	fmt.Println("silver:", silver)
-	fmt.Println("gold:", gold)
+  fmt.Println("silver:", silver)
+  fmt.Println("gold:", gold)
 }

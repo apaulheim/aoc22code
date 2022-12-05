@@ -1,19 +1,19 @@
 package main
 
 import (
-  "strconv"
-  "strings"
-  "io/ioutil"
-  "log"
-  "fmt"
-  "sort"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"sort"
+	"strconv"
+	"strings"
 )
 func main() {
   data, err := ioutil.ReadFile("day1.txt")
   if err != nil {
       log.Fatalf("unable to read file: %v", err)
   }
-	elvesStr := strings.Split(string(data), "\n\n")
+  elvesStr := strings.Split(string(data), "\n\n")
   elves := []int{}
   for _, e := range elvesStr {
     items := strings.Split(e, "\n")

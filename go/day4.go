@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"strconv"
 	"strings"
-  "strconv"
 )
 
 func contained(t1 []int, t2 []int) bool {
@@ -17,10 +17,10 @@ func notOverlapped(t1 []int, t2 []int) bool {
 }
 
 func main() {
-	dataStr, err := ioutil.ReadFile("day4.txt")
-	if err != nil {
-		log.Fatalf("unable to read file: %v", err)
-	}
+  dataStr, err := ioutil.ReadFile("day4.txt")
+  if err != nil {
+    log.Fatalf("unable to read file: %v", err)
+  }
   lines := strings.Split(string(dataStr), "\n")
   pairs :=  [][][]int{}
   for _, line := range(lines) {
@@ -37,14 +37,14 @@ func main() {
   
   silver := 0;
   for _, p := range(pairs) {
-    if(contained(p[0], p[1]) || contained(p[1], p[0])) {
+    if (contained(p[0], p[1]) || contained(p[1], p[0])) {
       silver++;
     }
   }
   
   gold := 0;
   for _, p := range(pairs) {
-    if(!(notOverlapped(p[0], p[1]) || notOverlapped(p[1], p[0]))) {
+    if (!(notOverlapped(p[0], p[1]) || notOverlapped(p[1], p[0]))) {
       gold++;
     }
   }
