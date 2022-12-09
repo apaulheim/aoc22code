@@ -1,5 +1,4 @@
 let fs = require("fs");
-const { REPL_MODE_SLOPPY } = require("repl");
 
 let input = fs.readFileSync("day9.txt", { encoding: "utf8" });
 
