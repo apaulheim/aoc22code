@@ -4,10 +4,33 @@ const coords = input
   .split("\r\n")
   .map((coordStr) => coordStr.split(",").map((cooord) => parseInt(cooord)));
 
-const coordSet = new Set();
-for (let coord of coords) {
-  coordSet.add(JSON.stringify(coord));
-}
+const silver = (coords) => {
+  const coordSet = new Set();
+  for (let coord of coords) {
+    coordSet.add(JSON.stringify(coord));
+  }
+  let covered = 0;
+  for (let coord of coords) {
+    if (coordSet.has(JSON.stringify([coord[0] - 1, coord[1], coord[2]])))
+      covered++;
+    if (coordSet.has(JSON.stringify([coord[0] + 1, coord[1], coord[2]])))
+      covered++;
+    if (coordSet.has(JSON.stringify([coord[0], coord[1] - 1, coord[2]])))
+      covered++;
+    if (coordSet.has(JSON.stringify([coord[0], coord[1] + 1, coord[2]])))
+      covered++;
+    if (coordSet.has(JSON.stringify([coord[0], coord[1], coord[2] - 1])))
+      covered++;
+    if (coordSet.has(JSON.stringify([coord[0], coord[1], coord[2] + 1])))
+      covered++;
+  }
+  return coords.length * 6 - covered;
+};
+
+console.log("silver:", silver(coords));
+
+// GOLD
+// min max finden
 let min = [
   Number.POSITIVE_INFINITY,
   Number.POSITIVE_INFINITY,
@@ -18,20 +41,7 @@ let max = [
   Number.NEGATIVE_INFINITY,
   Number.NEGATIVE_INFINITY,
 ];
-let covered = 0;
 for (let coord of coords) {
-  if (coordSet.has(JSON.stringify([coord[0] - 1, coord[1], coord[2]])))
-    covered++;
-  if (coordSet.has(JSON.stringify([coord[0] + 1, coord[1], coord[2]])))
-    covered++;
-  if (coordSet.has(JSON.stringify([coord[0], coord[1] - 1, coord[2]])))
-    covered++;
-  if (coordSet.has(JSON.stringify([coord[0], coord[1] + 1, coord[2]])))
-    covered++;
-  if (coordSet.has(JSON.stringify([coord[0], coord[1], coord[2] - 1])))
-    covered++;
-  if (coordSet.has(JSON.stringify([coord[0], coord[1], coord[2] + 1])))
-    covered++;
   min[0] = Math.min(min[0], coord[0]);
   min[1] = Math.min(min[1], coord[1]);
   min[2] = Math.min(min[2], coord[2]);
@@ -39,16 +49,15 @@ for (let coord of coords) {
   max[1] = Math.max(max[1], coord[1]);
   max[2] = Math.max(max[2], coord[2]);
 }
-
-const silver = coords.length * 6 - covered;
-console.log("silver:", silver);
-
-// GOLD
 // modell invertieren, ein Voxel Layer außen rum
 const invertedCoordsMap = new Map();
 const absoluteMin = Math.min(Math.min(min[0], min[1]), min[2]) - 1;
 const absoluteMax = Math.max(Math.max(max[0], max[1]), max[2]) + 1;
 
+const coordSet = new Set();
+for (let coord of coords) {
+  coordSet.add(JSON.stringify(coord));
+}
 for (let x = absoluteMin; x <= absoluteMax; x++) {
   for (let y = absoluteMin; y <= absoluteMax; y++) {
     for (let z = absoluteMin; z <= absoluteMax; z++) {
@@ -106,30 +115,10 @@ invertedCoordsMap.forEach((value, key) => {
   if (value) invertedCoords.push(JSON.parse(key));
 });
 
-// console.log(invertedCoordsMap.size - invertedCoords.length);
-
 // silver aufrufen für die invertierten coords
-const invertedCoordSet = new Set();
-for (let coord of invertedCoords) {
-  invertedCoordSet.add(JSON.stringify(coord));
-}
-covered = 0;
-for (let coord of invertedCoords) {
-  if (invertedCoordSet.has(JSON.stringify([coord[0] - 1, coord[1], coord[2]])))
-    covered++;
-  if (invertedCoordSet.has(JSON.stringify([coord[0] + 1, coord[1], coord[2]])))
-    covered++;
-  if (invertedCoordSet.has(JSON.stringify([coord[0], coord[1] - 1, coord[2]])))
-    covered++;
-  if (invertedCoordSet.has(JSON.stringify([coord[0], coord[1] + 1, coord[2]])))
-    covered++;
-  if (invertedCoordSet.has(JSON.stringify([coord[0], coord[1], coord[2] - 1])))
-    covered++;
-  if (invertedCoordSet.has(JSON.stringify([coord[0], coord[1], coord[2] + 1])))
-    covered++;
-}
+let faces = silver(invertedCoords);
 // äußere Hülle abziehen
 const cubeSize = absoluteMax + 1 - absoluteMin;
-const gold = invertedCoords.length * 6 - covered - cubeSize * cubeSize * 6;
+const gold = faces - cubeSize * cubeSize * 6;
 
 console.log("gold", gold);
